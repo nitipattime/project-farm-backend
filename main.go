@@ -243,7 +243,7 @@ func main() {
 	})
 
 	// ✅ GET /districts
-	app.Get("/districts", func(c *fiber.Ctx) error {
+	app.Get("", func(c *fiber.Ctx) error {
 		return c.JSON(fiber.Map{
 			"data": []fiber.Map{
 				{"id": 1, "name_th": "เขตพระนคร"},
@@ -267,21 +267,21 @@ func main() {
 		return c.JSON(fiber.Map{
 			"data": []fiber.Map{
 				{
-					"subdistrict_id": 1,
+					"subdistrict_id": 120110,
 					"subdistrict":    "เขตพระนคร",
-					"district_id":    18377,
+					"district_id":    1201,
 					"district":       "เขตพระนคร",
-					"province_id":    1,
+					"province_id":    3,
 					"province":       "เขตพระนคร",
 				},
-				{
-					"subdistrict_id": 2,
-					"subdistrict":    "เขตพระนคร",
-					"district_id":    18377,
-					"district":       "เขตพระนคร",
-					"province_id":    2,
-					"province":       "เขตพระนคร",
-				},
+				//{
+				//	"subdistrict_id": 2,
+				//	"subdistrict":    "เขตพระนคร",
+				//	"district_id":    18377,
+				//	"district":       "เขตพระนคร",
+				//	"province_id":    2,
+				//	"province":       "เขตพระนคร",
+				//},
 			},
 		})
 	})
@@ -300,64 +300,172 @@ func main() {
 
 	// ✅ GET /houses
 	app.Get("/houses", func(c *fiber.Ctx) error {
-		_ = c.QueryInt("page", 1) // ถ้าไม่มี page ให้ default เป็น 1
+		page := c.QueryInt("page", 1) // ถ้าไม่มี page ให้ default เป็น 1
 		_ = c.QueryInt("limit", 10)
-		_ = c.Query("keyword", "")
+		keyword := c.Query("keyword", "")
 		response := fiber.Map{}
-		response = fiber.Map{
-			"data": fiber.Map{
-				"list": []fiber.Map{
-					{
-						"id":        1,
-						"name":      "โรงเรือน A1",
-						"manager":   "คุณสมปอง พันธุ์ดี",
-						"avgWeight": 1800,
-						"duration":  35,
-						"status":    "กำลังเพาะเลี้ยง",
-						"startDate": "01/06/25",
-						"endDate":   "05/07/25",
+
+		if keyword == "a" {
+			response = fiber.Map{
+				"data": fiber.Map{
+					"list": []fiber.Map{
+						{
+							"id":        1,
+							"name":      "โรงเรือน AAAAAAAA",
+							"manager":   "คุณสมปอง พันธุ์ดี",
+							"avgWeight": 1800,
+							"duration":  35,
+							"status":    "กำลังเพาะเลี้ยง",
+							"startDate": "01/06/25",
+							"endDate":   "05/07/25",
+						},
 					},
-					{
-						"id":        2,
-						"name":      "โรงเรือน B2",
-						"manager":   "คุณสายฝน ใจเย็น",
-						"avgWeight": 1650,
-						"duration":  28,
-						"status":    "รอเพาะเลี้ยง",
-						"startDate": "10/06/25",
-						"endDate":   "08/07/25",
-					},
-					{
-						"id":        3,
-						"name":      "โรงเรือน C3",
-						"manager":   "คุณมนัส แสงทอง",
-						"avgWeight": 1725,
-						"duration":  32,
-						"status":    "เพาะเลี้ยงเสร็จสิ้น",
-						"startDate": "05/05/25",
-						"endDate":   "06/06/25",
-					},
-					{
-						"id":        4,
-						"name":      "โรงเรือน D4",
-						"manager":   "คุณจินตนา เมฆขาว",
-						"avgWeight": 1600,
-						"duration":  30,
-						"status":    "กำลังเพาะเลี้ยง",
-						"startDate": "15/06/25",
-						"endDate":   "15/07/25",
+					"page":       1,
+					"limit":      9,
+					"total":      1,
+					"totalPages": 1,
+					"summary": fiber.Map{
+						"totalFarms":   1,
+						"totalHouses":  1,
+						"totalChicken": 1,
 					},
 				},
-				"page":       1,
-				"limit":      9,
-				"total":      1,
-				"totalPages": 1,
-				"summary": fiber.Map{
-					"totalFarms":   1,
-					"totalHouses":  1,
-					"totalChicken": 1,
-				},
-			},
+			}
+		} else {
+			if page == 1 {
+				response = fiber.Map{
+					"data": fiber.Map{
+						"list": []fiber.Map{
+							{
+								"id":        1,
+								"name":      "โรงเรือน A1",
+								"manager":   "คุณสมปอง พันธุ์ดี",
+								"avgWeight": 1800,
+								"duration":  35,
+								"status":    "กำลังเพาะเลี้ยง",
+								"startDate": "01/06/25",
+								"endDate":   "05/07/25",
+							},
+							{
+								"id":        2,
+								"name":      "โรงเรือน B2",
+								"manager":   "คุณสายฝน ใจเย็น",
+								"avgWeight": 1650,
+								"duration":  28,
+								"status":    "รอเพาะเลี้ยง",
+								"startDate": "10/06/25",
+								"endDate":   "08/07/25",
+							},
+							{
+								"id":        3,
+								"name":      "โรงเรือน C3",
+								"manager":   "คุณมนัส แสงทอง",
+								"avgWeight": 1725,
+								"duration":  32,
+								"status":    "เพาะเลี้ยงเสร็จสิ้น",
+								"startDate": "05/05/25",
+								"endDate":   "06/06/25",
+							},
+							{
+								"id":        4,
+								"name":      "โรงเรือน D4",
+								"manager":   "คุณจินตนา เมฆขาว",
+								"avgWeight": 1600,
+								"duration":  30,
+								"status":    "กำลังเพาะเลี้ยง",
+								"startDate": "15/06/25",
+								"endDate":   "15/07/25",
+							},
+							{
+								"id":        5,
+								"name":      "โรงเรือน D4",
+								"manager":   "คุณจินตนา เมฆขาว",
+								"avgWeight": 1600,
+								"duration":  30,
+								"status":    "กำลังเพาะเลี้ยง",
+								"startDate": "15/06/25",
+								"endDate":   "15/07/25",
+							},
+							{
+								"id":        6,
+								"name":      "โรงเรือน D4",
+								"manager":   "คุณจินตนา เมฆขาว",
+								"avgWeight": 1600,
+								"duration":  30,
+								"status":    "กำลังเพาะเลี้ยง",
+								"startDate": "15/06/25",
+								"endDate":   "15/07/25",
+							},
+							{
+								"id":        7,
+								"name":      "โรงเรือน D4",
+								"manager":   "คุณจินตนา เมฆขาว",
+								"avgWeight": 1600,
+								"duration":  30,
+								"status":    "กำลังเพาะเลี้ยง",
+								"startDate": "15/06/25",
+								"endDate":   "15/07/25",
+							},
+							{
+								"id":        8,
+								"name":      "โรงเรือน D4",
+								"manager":   "คุณจินตนา เมฆขาว",
+								"avgWeight": 1600,
+								"duration":  30,
+								"status":    "กำลังเพาะเลี้ยง",
+								"startDate": "15/06/25",
+								"endDate":   "15/07/25",
+							},
+							{
+								"id":        9,
+								"name":      "โรงเรือน D4",
+								"manager":   "คุณจินตนา เมฆขาว",
+								"avgWeight": 1600,
+								"duration":  30,
+								"status":    "กำลังเพาะเลี้ยง",
+								"startDate": "15/06/25",
+								"endDate":   "15/07/25",
+							},
+						},
+						"page":       1,
+						"limit":      9,
+						"total":      10,
+						"totalPages": 2,
+						"summary": fiber.Map{
+							"totalFarms":   2,
+							"totalHouses":  3,
+							"totalChicken": 123,
+						},
+					},
+				}
+			} else if page == 2 {
+				response = fiber.Map{
+					"data": fiber.Map{
+						"list": []fiber.Map{
+							{
+								"id":        10,
+								"name":      "โรงเรือน A1",
+								"manager":   "คุณสมปอง พันธุ์ดี",
+								"avgWeight": 1800,
+								"duration":  35,
+								"status":    "กำลังเพาะเลี้ยง",
+								"startDate": "01/06/25",
+								"endDate":   "05/07/25",
+							},
+						},
+						"page":       2,
+						"limit":      9,
+						"total":      10,
+						"totalPages": 2,
+						"summary": fiber.Map{
+							"totalFarms":   2,
+							"totalHouses":  3,
+							"totalChicken": 123,
+						},
+					},
+				}
+			}
+
 		}
 
 		return c.JSON(response)
@@ -421,6 +529,13 @@ func main() {
 				},
 				{
 					"id":        2,
+					"manager":   "คุณสายฝน บุญเลิศ",
+					"avgWeight": 1780,
+					"duration":  28,
+					"status":    "รอเพาะเลี้ยง",
+				},
+				{
+					"id":        3,
 					"manager":   "คุณสายฝน บุญเลิศ",
 					"avgWeight": 1780,
 					"duration":  28,
